@@ -1,0 +1,1955 @@
+<!-- ===== KUIS BOUNCE PREMIUM v10 — GEO BALL ===== -->
+<div id="kuisBounce">
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div class="kb-loader" id="kbLoader" aria-hidden="true">
+    <div class="kb-loader-scene">
+      <!-- Cincin orbit -->
+      <div class="kb-loader-ring kb-loader-ring-1"></div>
+      <div class="kb-loader-ring kb-loader-ring-2"></div>
+      <div class="kb-loader-ring kb-loader-ring-3"></div>
+
+      <!-- Inti bola -->
+      <div class="kb-loader-core">
+        <div class="kb-loader-core-inner"></div>
+      </div>
+
+      <!-- Bola orbit kecil -->
+      <div class="kb-loader-orbit kb-loader-orbit-1"><span></span></div>
+      <div class="kb-loader-orbit kb-loader-orbit-2"><span></span></div>
+      <div class="kb-loader-orbit kb-loader-orbit-3"><span></span></div>
+
+      <!-- Progress bar tipis -->
+      <div class="kb-loader-bar"><div class="kb-loader-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="kb-card">
+
+    <!-- HEADER -->
+    <div class="kb-header">
+      <div class="kb-title">
+        <span class="kb-icon">🛰️</span>
+        <div>
+          <div class="kb-title-main">GEO BALL</div>
+          <div class="kb-title-sub">Penginderaan Jauh</div>
+        </div>
+      </div>
+      <div class="kb-hud">
+        <div class="kb-hud-item">
+          <span class="kb-hud-label">SKOR</span>
+          <span class="kb-hud-val" id="kbScore">0</span>
+        </div>
+        <div class="kb-hud-item">
+          <span class="kb-hud-label">SISA BOLA</span>
+          <span class="kb-hud-val" id="kbRemaining">20</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kb-progress">
+      <div class="kb-progress-fill" id="kbProgressFill"></div>
+    </div>
+
+    <!-- MESIN -->
+    <div class="kb-machine">
+      <div class="kb-cage-wrap">
+
+        <div class="kb-cage" id="kbCage">
+          <div class="kb-cage-outer" aria-hidden="true"></div>
+          <div class="kb-cage-outer2" aria-hidden="true"></div>
+          <div class="kb-cage-glass" aria-hidden="true"></div>
+          <div class="kb-cage-glow" aria-hidden="true"></div>
+          <div class="kb-cage-inner" id="kbCageInner"></div>
+          <div class="kb-cage-ring" aria-hidden="true"></div>
+          <div class="kb-gate" aria-hidden="true"></div>
+          <div class="kb-pipe" aria-hidden="true"></div>
+        </div>
+
+        <div class="kb-lever-assembly">
+          <div class="kb-lever-bracket" aria-hidden="true">
+            <span class="kb-bracket-bolt"></span>
+            <span class="kb-bracket-bolt"></span>
+          </div>
+          <div class="kb-lever" id="kbLever" role="button" tabindex="0" aria-label="Tarik tuas ke bawah untuk memutar">
+            <div class="kb-lever-slot"></div>
+            <div class="kb-lever-rod" id="kbLeverRod">
+              <div class="kb-lever-knob"></div>
+            </div>
+            <div class="kb-lever-base"></div>
+            <div class="kb-lever-hint">⬇ TARIK</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="kb-slot-side">
+        <div class="kb-slot-label">BOLA TERPILIH</div>
+        <div class="kb-slot" id="kbSlot">?</div>
+        <div class="kb-status" id="kbStatus">SIAP</div>
+        <div class="kb-lever-counter" id="kbBtnCount">20×</div>
+      </div>
+    </div>
+
+    <div class="kb-question-panel" id="kbQPanel"></div>
+  </div>
+</div>
+
+<style>
+#kuisBounce{
+  --kb-primary:#2563eb;
+  --kb-accent:#8b5cf6;
+  --kb-gold:#fbbf24;
+  --kb-gold-deep:#b45309;
+  --kb-green:#10b981;
+  --kb-rose:#f43f5e;
+  --kb-bg:#fff;
+  --kb-text:#0f172a;
+  --kb-muted:#64748b;
+  --kb-border:#e2e8f0;
+  max-width:1020px; margin:24px auto; padding:0 12px;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  position:relative;
+}
+html[data-theme="dark"] #kuisBounce{
+  --kb-bg:#0f1a35;
+  --kb-text:#e6eeff;
+  --kb-muted:#98a7cf;
+  --kb-border:#1f2a48;
+}
+
+/* ============ LOADING OVERLAY ============ */
+#kuisBounce .kb-loader{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(37,99,235,.25), transparent 55%),
+    radial-gradient(circle at 30% 70%, rgba(139,92,246,.22), transparent 60%),
+    radial-gradient(circle at 70% 30%, rgba(236,72,153,.15), transparent 55%),
+    linear-gradient(135deg, #05070f 0%, #0a0f1e 45%, #100825 100%);
+  display:grid;
+  place-items:center;
+  opacity:1;
+  transition:opacity .55s ease, visibility .55s ease;
+  overflow:hidden;
+}
+#kuisBounce .kb-loader.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+#kuisBounce .kb-loader::before{
+  content:'';
+  position:absolute;
+  inset:-50%;
+  background:
+    conic-gradient(from 0deg,
+      transparent 0deg,
+      rgba(59,130,246,.12) 60deg,
+      transparent 120deg,
+      rgba(139,92,246,.10) 200deg,
+      transparent 260deg,
+      rgba(236,72,153,.08) 320deg,
+      transparent 360deg);
+  animation:kbLoaderAmbient 8s linear infinite;
+  pointer-events:none;
+}
+@keyframes kbLoaderAmbient{ to{ transform:rotate(360deg); } }
+
+#kuisBounce .kb-loader-scene{
+  position:relative;
+  width:280px; height:280px;
+  display:grid;
+  place-items:center;
+}
+
+/* Ring orbit yang berputar */
+#kuisBounce .kb-loader-ring{
+  position:absolute;
+  border-radius:50%;
+  border:1.5px solid transparent;
+  pointer-events:none;
+}
+#kuisBounce .kb-loader-ring-1{
+  inset:0;
+  border-top-color:rgba(59,130,246,.85);
+  border-right-color:rgba(59,130,246,.25);
+  filter:drop-shadow(0 0 6px rgba(59,130,246,.8));
+  animation:kbLoaderSpin 2.4s linear infinite;
+}
+#kuisBounce .kb-loader-ring-2{
+  inset:26px;
+  border-bottom-color:rgba(139,92,246,.85);
+  border-left-color:rgba(139,92,246,.25);
+  filter:drop-shadow(0 0 6px rgba(139,92,246,.8));
+  animation:kbLoaderSpin 3.2s linear infinite reverse;
+}
+#kuisBounce .kb-loader-ring-3{
+  inset:52px;
+  border-top-color:rgba(236,72,153,.85);
+  border-left-color:rgba(236,72,153,.2);
+  filter:drop-shadow(0 0 6px rgba(236,72,153,.8));
+  animation:kbLoaderSpin 1.9s linear infinite;
+}
+@keyframes kbLoaderSpin{
+  to{ transform:rotate(360deg); }
+}
+
+/* Inti bola */
+#kuisBounce .kb-loader-core{
+  position:absolute;
+  width:64px; height:64px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 28%,
+      rgba(255,255,255,.95) 0%,
+      rgba(147,197,253,.85) 15%,
+      rgba(59,130,246,.95) 45%,
+      rgba(30,58,138,.95) 100%);
+  box-shadow:
+    inset -6px -6px 14px rgba(0,0,0,.55),
+    inset 6px 6px 12px rgba(255,255,255,.35),
+    0 0 30px rgba(59,130,246,.85),
+    0 0 70px rgba(59,130,246,.5),
+    0 0 120px rgba(139,92,246,.35);
+  animation:kbLoaderCorePulse 2s ease-in-out infinite;
+}
+@keyframes kbLoaderCorePulse{
+  0%,100%{ transform:scale(1); }
+  50%    { transform:scale(1.12); }
+}
+#kuisBounce .kb-loader-core::before{
+  content:'';
+  position:absolute;
+  inset:-14px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.25);
+  animation:kbLoaderCoreRipple 2.4s ease-out infinite;
+}
+#kuisBounce .kb-loader-core::after{
+  content:'';
+  position:absolute;
+  inset:-28px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);
+  animation:kbLoaderCoreRipple 2.4s ease-out infinite .8s;
+}
+@keyframes kbLoaderCoreRipple{
+  0%  { transform:scale(.55); opacity:0; }
+  35% { transform:scale(.85); opacity:.9; }
+  100%{ transform:scale(1.55); opacity:0; }
+}
+
+/* Bola orbit kecil */
+#kuisBounce .kb-loader-orbit{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  pointer-events:none;
+  animation:kbLoaderSpin 3.5s linear infinite;
+}
+#kuisBounce .kb-loader-orbit-1{ animation-duration:2.6s; }
+#kuisBounce .kb-loader-orbit-2{ animation-duration:3.4s; animation-direction:reverse; }
+#kuisBounce .kb-loader-orbit-3{ animation-duration:4.2s; }
+#kuisBounce .kb-loader-orbit span{
+  position:absolute;
+  top:0; left:50%;
+  width:14px; height:14px;
+  border-radius:50%;
+  transform:translate(-50%, -50%);
+  display:block;
+}
+#kuisBounce .kb-loader-orbit-1 span{
+  width:14px; height:14px;
+  background:radial-gradient(circle at 30% 30%, #fde68a, #f59e0b 60%, #78350f);
+  box-shadow:0 0 16px rgba(251,191,36,.9), 0 0 40px rgba(251,191,36,.5);
+}
+#kuisBounce .kb-loader-orbit-2 span{
+  width:10px; height:10px;
+  background:radial-gradient(circle at 30% 30%, #c4b5fd, #8b5cf6 60%, #4c1d95);
+  box-shadow:0 0 14px rgba(139,92,246,.9), 0 0 34px rgba(139,92,246,.5);
+}
+#kuisBounce .kb-loader-orbit-3 span{
+  width:12px; height:12px;
+  background:radial-gradient(circle at 30% 30%, #f9a8d4, #ec4899 60%, #831843);
+  box-shadow:0 0 16px rgba(236,72,153,.9), 0 0 40px rgba(236,72,153,.5);
+}
+
+/* Progress bar tipis di bawah scene */
+#kuisBounce .kb-loader-bar{
+  position:absolute;
+  bottom:-56px;
+  left:50%;
+  transform:translateX(-50%);
+  width:180px;
+  height:4px;
+  background:rgba(255,255,255,.08);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+#kuisBounce .kb-loader-bar-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#3b82f6,#8b5cf6,#ec4899,#f59e0b);
+  background-size:200% 100%;
+  border-radius:10px;
+  animation:
+    kbLoaderBarFill 1.8s cubic-bezier(.4,0,.2,1) forwards,
+    kbLoaderBarShift 1.2s linear infinite;
+  box-shadow:0 0 12px rgba(139,92,246,.7);
+}
+@keyframes kbLoaderBarFill{
+  0%  { width:0%; }
+  20% { width:22%; }
+  55% { width:58%; }
+  80% { width:88%; }
+  100%{ width:100%; }
+}
+@keyframes kbLoaderBarShift{
+  to{ background-position:200% 0; }
+}
+
+/* Partikel debu bintang di background loader */
+#kuisBounce .kb-loader-scene::before,
+#kuisBounce .kb-loader-scene::after{
+  content:'';
+  position:absolute;
+  inset:-80px;
+  pointer-events:none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 20%, rgba(255,255,255,.7), transparent 60%),
+    radial-gradient(1.5px 1.5px at 78% 15%, rgba(147,197,253,.8), transparent 60%),
+    radial-gradient(1.2px 1.2px at 30% 82%, rgba(196,181,253,.75), transparent 60%),
+    radial-gradient(1.5px 1.5px at 68% 88%, rgba(249,168,212,.7), transparent 60%),
+    radial-gradient(1.2px 1.2px at 45% 45%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1.2px 1.2px at 88% 55%, rgba(147,197,253,.65), transparent 60%),
+    radial-gradient(1.2px 1.2px at 18% 60%, rgba(255,255,255,.6), transparent 60%);
+  opacity:.85;
+  animation:kbLoaderStars 4s ease-in-out infinite alternate;
+}
+#kuisBounce .kb-loader-scene::after{
+  background-image:
+    radial-gradient(1.2px 1.2px at 25% 35%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1.2px 1.2px at 82% 72%, rgba(196,181,253,.6), transparent 60%),
+    radial-gradient(1.5px 1.5px at 55% 12%, rgba(249,168,212,.55), transparent 60%),
+    radial-gradient(1.2px 1.2px at 40% 68%, rgba(147,197,253,.6), transparent 60%);
+  animation-delay:-2s;
+}
+@keyframes kbLoaderStars{
+  0%  { opacity:.35; transform:scale(.98); }
+  100%{ opacity:.95; transform:scale(1.02); }
+}
+
+/* ============ KARTU UTAMA ============ */
+#kuisBounce .kb-card{
+  background:var(--kb-bg);
+  border:1px solid var(--kb-border);
+  border-radius:28px;
+  padding:26px 22px 22px;
+  box-shadow:
+    0 25px 70px rgba(15,23,42,.10),
+    0 0 0 1px rgba(37,99,235,.04) inset;
+  position:relative;
+  overflow:hidden;
+}
+#kuisBounce .kb-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ec4899,#ef4444);
+  background-size:200% 100%;
+  animation:kbHeaderShift 6s linear infinite;
+}
+@keyframes kbHeaderShift{ to{ background-position:200% 0; } }
+
+/* HEADER */
+#kuisBounce .kb-header{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:14px; flex-wrap:wrap; margin-bottom:14px;
+}
+#kuisBounce .kb-title{ display:flex; align-items:center; gap:12px; }
+#kuisBounce .kb-icon{
+  font-size:1.9rem;
+  filter:drop-shadow(0 2px 6px rgba(37,99,235,.6));
+  display:inline-block;
+  animation:kbSatOrbit 5s ease-in-out infinite;
+}
+@keyframes kbSatOrbit{
+  0%,100%{ transform:rotate(-8deg) translateY(0); }
+  50%    { transform:rotate(8deg) translateY(-3px); }
+}
+#kuisBounce .kb-title-main{
+  font-size:1.3rem; font-weight:900; letter-spacing:2px;
+  background:linear-gradient(135deg,#2563eb,#8b5cf6,#ec4899);
+  background-size:200% auto;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:kbTitleShift 5s ease infinite;
+}
+@keyframes kbTitleShift{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
+#kuisBounce .kb-title-sub{
+  font-size:.78rem; color:var(--kb-muted); font-weight:700;
+  letter-spacing:1.5px; margin-top:2px;
+}
+#kuisBounce .kb-hud{ display:flex; gap:8px; }
+#kuisBounce .kb-hud-item{
+  background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(139,92,246,.06));
+  border:1px solid var(--kb-border);
+  padding:6px 14px; border-radius:14px;
+  display:flex; flex-direction:column; align-items:center;
+  min-width:76px;
+}
+#kuisBounce .kb-hud-label{
+  font-size:.58rem; font-weight:800; letter-spacing:1px;
+  color:var(--kb-muted);
+}
+#kuisBounce .kb-hud-val{
+  font-size:1.1rem; font-weight:900;
+  font-family:ui-monospace,monospace;
+  color:var(--kb-primary);
+  line-height:1.1;
+}
+#kuisBounce #kbScore.bump{
+  animation:kbScoreBump .5s cubic-bezier(.34,1.56,.64,1);
+  color:var(--kb-green);
+}
+@keyframes kbScoreBump{
+  0%{transform:scale(1)} 50%{transform:scale(1.35)} 100%{transform:scale(1)}
+}
+
+/* PROGRESS */
+#kuisBounce .kb-progress{
+  height:6px; background:rgba(37,99,235,.08);
+  border-radius:10px; overflow:hidden; margin-bottom:18px;
+}
+#kuisBounce .kb-progress-fill{
+  height:100%; width:0%;
+  background:linear-gradient(90deg,#3b82f6,#8b5cf6,#ec4899,#f59e0b);
+  background-size:200% 100%;
+  border-radius:10px;
+  transition:width .6s cubic-bezier(.34,1.56,.64,1);
+  animation:kbProgressShift 3s linear infinite;
+  box-shadow:0 0 14px rgba(139,92,246,.5);
+}
+@keyframes kbProgressShift{ to{ background-position:200% 0; } }
+
+/* MESIN */
+#kuisBounce .kb-machine{
+  display:flex; justify-content:center; align-items:center;
+  gap:24px; flex-wrap:wrap; margin-bottom:14px;
+  padding:22px 8px 10px;
+}
+#kuisBounce .kb-cage-wrap{
+  position:relative;
+  display:inline-block;
+  flex-shrink:0;
+  margin-right:120px;
+}
+
+/* LINGKARAN */
+#kuisBounce .kb-cage{
+  position:relative;
+  width:340px; height:340px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(59,130,246,.28), transparent 55%),
+    radial-gradient(circle at 70% 80%, rgba(139,92,246,.22), transparent 55%),
+    radial-gradient(circle at 50% 50%, #1e293b 0%, #0a0f1e 85%);
+  border:4px solid #1e293b;
+  box-shadow:
+    inset 0 0 90px rgba(0,0,0,.9),
+    inset 0 0 40px rgba(59,130,246,.25),
+    0 30px 80px rgba(0,0,0,.5),
+    0 0 60px rgba(37,99,235,.35);
+  isolation:isolate;
+}
+#kuisBounce .kb-cage-outer{
+  position:absolute; inset:-32px;
+  border-radius:50%;
+  background:conic-gradient(from 0deg,
+      #3b82f6, #8b5cf6, #ec4899, #f59e0b,
+      #10b981, #06b6d4, #3b82f6);
+  padding:5px;
+  -webkit-mask:radial-gradient(circle, transparent calc(50% - 5px), #000 calc(50% - 4px), #000 calc(50% + 1px), transparent calc(50% + 2px));
+          mask:radial-gradient(circle, transparent calc(50% - 5px), #000 calc(50% - 4px), #000 calc(50% + 1px), transparent calc(50% + 2px));
+  animation:kbOuterSpin 12s linear infinite;
+  filter:drop-shadow(0 0 18px rgba(59,130,246,.7));
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes kbOuterSpin{ to{ transform:rotate(360deg); } }
+#kuisBounce .kb-cage-outer2{
+  position:absolute; inset:-16px;
+  border-radius:50%;
+  border:2px solid #334155;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,.5),
+    0 0 0 1px rgba(255,255,255,.05),
+    0 0 30px rgba(37,99,235,.25);
+  pointer-events:none;
+  z-index:0;
+}
+#kuisBounce .kb-cage-outer2::before{
+  content:''; position:absolute; inset:6px;
+  border-radius:50%;
+  border:1px dashed rgba(148,163,184,.35);
+  animation:kbRingSpin 30s linear infinite;
+}
+#kuisBounce .kb-cage-outer2::after{
+  content:''; position:absolute; inset:-4px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 0%, #fbbf24 3px, transparent 4px),
+    radial-gradient(circle at 50% 100%, #fbbf24 3px, transparent 4px),
+    radial-gradient(circle at 0% 50%, #3b82f6 3px, transparent 4px),
+    radial-gradient(circle at 100% 50%, #3b82f6 3px, transparent 4px);
+}
+#kuisBounce .kb-cage-ring{
+  position:absolute; inset:-4px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:1;
+}
+#kuisBounce .kb-cage-ring::before{
+  content:''; position:absolute; inset:0;
+  border-radius:50%;
+  border:1px solid rgba(59,130,246,.25);
+  animation:kbRingSpin 20s linear infinite reverse;
+}
+@keyframes kbRingSpin{ to{ transform:rotate(360deg); } }
+#kuisBounce .kb-cage-glass{
+  position:absolute; inset:0; border-radius:50%;
+  pointer-events:none; z-index:5;
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255,255,255,.16) 45%, transparent 60%),
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 70% 85%, rgba(139,92,246,.10) 0%, transparent 50%);
+  background-size:250% 250%, 100% 100%, 100% 100%;
+  animation:kbGlassShine 7s ease-in-out infinite;
+}
+@keyframes kbGlassShine{
+  0%,100%{ background-position: 0% 0%, 0 0, 0 0; }
+  50%    { background-position: 130% 130%, 0 0, 0 0; }
+}
+#kuisBounce .kb-cage-glow{
+  position:absolute; inset:6px; border-radius:50%;
+  pointer-events:none; z-index:1;
+  background:radial-gradient(circle at 50% 50%, rgba(59,130,246,.18) 0%, transparent 60%);
+  animation:kbGlowPulse 3s ease-in-out infinite;
+}
+@keyframes kbGlowPulse{
+  0%,100%{ opacity:.5; transform:scale(.96); }
+  50%    { opacity:1;  transform:scale(1.02); }
+}
+#kuisBounce .kb-cage-inner{
+  position:absolute; inset:0;
+  border-radius:50%;
+  z-index:2;
+}
+
+/* LUBANG */
+#kuisBounce .kb-gate{
+  position:absolute; left:50%; bottom:-10px;
+  width:60px; height:16px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,#000,#0a0f1e);
+  border:2px solid var(--kb-gold);
+  border-radius:50%;
+  box-shadow:
+    0 0 26px rgba(251,191,36,.7),
+    inset 0 0 12px rgba(0,0,0,.9);
+  z-index:6;
+}
+#kuisBounce .kb-gate::after{
+  content:''; position:absolute; inset:3px 6px;
+  border-radius:50%;
+  background:radial-gradient(circle, #fbbf24 0%, #b45309 70%, #78350f 100%);
+  box-shadow:0 0 16px #fbbf24, inset 0 0 6px rgba(0,0,0,.6);
+  animation:kbGateGlow 1.6s ease-in-out infinite;
+}
+@keyframes kbGateGlow{
+  0%,100%{ opacity:.6; transform:scale(1); }
+  50%    { opacity:1;  transform:scale(1.08); }
+}
+#kuisBounce .kb-pipe{
+  position:absolute; left:50%; bottom:-28px;
+  width:14px; height:32px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(251,191,36,.6),rgba(251,191,36,.05));
+  border-left:2px solid rgba(251,191,36,.5);
+  border-right:2px solid rgba(251,191,36,.5);
+  z-index:5;
+  pointer-events:none;
+}
+
+/* TUAS */
+#kuisBounce .kb-lever-assembly{
+  position:absolute;
+  top:50%;
+  right:-100px;
+  transform:translateY(-50%);
+  display:flex;
+  align-items:center;
+  gap:0;
+  z-index:20;
+}
+#kuisBounce .kb-lever-bracket{
+  position:relative;
+  width:36px; height:44px;
+  background:linear-gradient(180deg,#e2e8f0 0%,#94a3b8 18%,#475569 50%,#1e293b 85%,#0f172a 100%);
+  border:2px solid #334155;
+  border-radius:6px;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,.35),
+    inset 0 -3px 6px rgba(0,0,0,.6),
+    inset 2px 0 3px rgba(255,255,255,.15),
+    inset -2px 0 3px rgba(0,0,0,.4),
+    0 4px 10px rgba(0,0,0,.4);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  align-items:center;
+  padding:4px 0;
+}
+#kuisBounce .kb-bracket-bolt{
+  width:12px; height:12px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #f1f5f9, #94a3b8 45%, #334155 85%);
+  box-shadow:
+    inset 0 -2px 3px rgba(0,0,0,.7),
+    inset 0 1px 2px rgba(255,255,255,.6),
+    0 1px 2px rgba(255,255,255,.25);
+}
+#kuisBounce .kb-lever-bracket::before{
+  content:'';
+  position:absolute;
+  left:-22px;
+  top:50%;
+  transform:translateY(-50%);
+  width:24px; height:32px;
+  background:linear-gradient(180deg,#94a3b8 0%,#475569 45%,#1e293b 100%);
+  border-radius:4px;
+  border:2px solid #334155;
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.3),
+    inset 0 -2px 4px rgba(0,0,0,.6);
+  z-index:-1;
+}
+#kuisBounce .kb-lever{
+  position:relative;
+  width:64px; height:280px;
+  cursor:grab;
+  transition:transform .2s;
+  user-select:none;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+#kuisBounce .kb-lever.dragging{ cursor:grabbing; }
+#kuisBounce .kb-lever:hover:not(.disabled):not(.dragging){ transform:scale(1.03); }
+#kuisBounce .kb-lever.disabled{
+  cursor:not-allowed;
+  opacity:.5;
+  pointer-events:none;
+}
+#kuisBounce .kb-lever:focus-visible{
+  outline:3px solid var(--kb-gold);
+  outline-offset:6px;
+  border-radius:20px;
+}
+#kuisBounce .kb-lever-slot{
+  position:absolute;
+  left:50%; top:24px;
+  transform:translateX(-50%);
+  width:12px; height:200px;
+  background:linear-gradient(180deg,#0a0f1e 0%,#1e293b 50%,#0a0f1e 100%);
+  border-radius:8px;
+  box-shadow:
+    inset 0 0 8px rgba(0,0,0,.9),
+    inset 0 0 0 1px rgba(51,65,85,.6);
+}
+#kuisBounce .kb-lever-rod{
+  position:absolute;
+  left:50%; top:24px;
+  transform:translateX(-50%) translateY(0);
+  width:16px; height:110px;
+  background:linear-gradient(90deg,
+    #64748b 0%, #cbd5e1 20%, #f8fafc 42%, #e2e8f0 50%, #94a3b8 62%, #475569 100%);
+  border-radius:8px;
+  box-shadow:
+    inset 0 0 4px rgba(0,0,0,.4),
+    inset 1px 0 1px rgba(255,255,255,.5),
+    inset -1px 0 1px rgba(0,0,0,.4),
+    0 3px 8px rgba(0,0,0,.5);
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+  z-index:2;
+}
+#kuisBounce .kb-lever-rod.pulling{
+  animation:kbLeverSpring .42s cubic-bezier(.5,1.8,.4,1) forwards;
+}
+@keyframes kbLeverSpring{
+  0%   { transform: translateX(-50%) translateY(0); }
+  35%  { transform: translateX(-50%) translateY(108px); }
+  65%  { transform: translateX(-50%) translateY(85px); }
+  85%  { transform: translateX(-50%) translateY(98px); }
+  100% { transform: translateX(-50%) translateY(95px); }
+}
+#kuisBounce .kb-lever-rod.returning{
+  transform:translateX(-50%) translateY(0);
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+}
+#kuisBounce .kb-lever-rod.pulling .kb-lever-knob{
+  animation:kbKnobVibrate .16s ease-in-out 3;
+}
+@keyframes kbKnobVibrate{
+  0%,100%{ transform: translateX(-50%) rotate(0deg); }
+  25%    { transform: translateX(-50%) rotate(-4deg); }
+  75%    { transform: translateX(-50%) rotate(4deg); }
+}
+#kuisBounce .kb-lever-knob{
+  position:absolute;
+  top:-26px; left:50%;
+  transform:translateX(-50%);
+  width:40px; height:40px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 28%, #fca5a5 0%, #ef4444 40%, #b91c1c 75%, #7f1d1d 100%);
+  border:2px solid #7f1d1d;
+  box-shadow:
+    inset -4px -4px 8px rgba(0,0,0,.4),
+    inset 4px 4px 8px rgba(255,255,255,.35),
+    0 4px 10px rgba(0,0,0,.5),
+    0 0 18px rgba(239,68,68,.5);
+  animation:kbKnobGlow 2s ease-in-out infinite;
+}
+@keyframes kbKnobGlow{
+  0%,100%{ box-shadow:
+    inset -4px -4px 8px rgba(0,0,0,.4),
+    inset 4px 4px 8px rgba(255,255,255,.35),
+    0 4px 10px rgba(0,0,0,.5),
+    0 0 18px rgba(239,68,68,.5); }
+  50%{ box-shadow:
+    inset -4px -4px 8px rgba(0,0,0,.4),
+    inset 4px 4px 8px rgba(255,255,255,.35),
+    0 4px 10px rgba(0,0,0,.5),
+    0 0 28px rgba(239,68,68,.85),
+    0 0 50px rgba(239,68,68,.5); }
+}
+#kuisBounce .kb-lever-base{
+  position:absolute;
+  left:50%; bottom:6px;
+  transform:translateX(-50%);
+  width:56px; height:56px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%, #64748b, #334155 55%, #0a0f1e 100%);
+  border:3px solid #334155;
+  box-shadow:
+    inset 0 3px 8px rgba(255,255,255,.15),
+    inset 0 -6px 12px rgba(0,0,0,.6),
+    0 8px 20px rgba(0,0,0,.5);
+  z-index:3;
+}
+#kuisBounce .kb-lever-base::after{
+  content:''; position:absolute; inset:14px;
+  border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, #94a3b8, #334155 80%);
+  box-shadow:inset 0 -2px 5px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,.3);
+}
+#kuisBounce .kb-lever-hint{
+  position:absolute;
+  bottom:-4px; left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff;
+  font-size:.55rem;
+  font-weight:900;
+  padding:3px 8px;
+  border-radius:10px;
+  letter-spacing:1px;
+  white-space:nowrap;
+  animation:kbHintPulse 1.4s ease-in-out infinite;
+  box-shadow:0 3px 8px rgba(239,68,68,.5);
+  pointer-events:none;
+}
+@keyframes kbHintPulse{
+  0%,100%{ transform:translateX(-50%) translateY(0); opacity:.9; }
+  50%    { transform:translateX(-50%) translateY(4px); opacity:1; }
+}
+
+/* SLOT KANAN */
+#kuisBounce .kb-slot-side{
+  display:flex; flex-direction:column; align-items:center;
+  gap:10px;
+  min-width:130px;
+}
+#kuisBounce .kb-slot-label{
+  font-size:.65rem;
+  text-transform:uppercase;
+  letter-spacing:2.5px;
+  color:var(--kb-muted);
+  font-weight:800;
+}
+#kuisBounce .kb-slot{
+  width:110px; height:110px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #1f2937, #0a0f1e 70%);
+  color:#475569;
+  display:grid; place-items:center;
+  font-weight:900; font-size:2rem;
+  font-family:ui-monospace,monospace;
+  border:3px dashed #475569;
+  transition:all .4s;
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,.85),
+    0 0 0 8px rgba(15,23,42,.3),
+    0 8px 24px rgba(0,0,0,.3);
+  text-shadow:0 2px 4px rgba(0,0,0,.6);
+  position:relative;
+}
+#kuisBounce .kb-slot.landed{
+  color:#fff;
+  border:3px solid var(--kb-gold);
+  box-shadow:
+    0 0 55px rgba(251,191,36,.95),
+    0 0 110px rgba(251,191,36,.5),
+    inset -4px -4px 8px rgba(0,0,0,.4),
+    inset 4px 4px 9px rgba(255,255,255,.5),
+    0 0 0 8px rgba(251,191,36,.2);
+  animation:kbLand .7s cubic-bezier(.34,1.56,.64,1);
+}
+#kuisBounce .kb-slot.landed::before{
+  content:''; position:absolute; inset:-16px;
+  border-radius:50%;
+  border:2px solid rgba(251,191,36,.5);
+  animation:kbRingBurst 1.4s ease-out;
+}
+@keyframes kbRingBurst{
+  0%  { transform:scale(.6); opacity:1; }
+  100%{ transform:scale(1.6); opacity:0; }
+}
+@keyframes kbLand{
+  0%   { transform:scale(.3) rotate(-30deg); opacity:0; }
+  60%  { transform:scale(1.22) rotate(8deg); }
+  100% { transform:scale(1) rotate(0); opacity:1; }
+}
+#kuisBounce .kb-lever-counter{
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff;
+  padding:5px 16px;
+  border-radius:20px;
+  font-family:ui-monospace,monospace;
+  font-size:.85rem;
+  font-weight:800;
+  box-shadow:0 4px 12px rgba(239,68,68,.4);
+  border:1px solid rgba(255,255,255,.25);
+}
+#kuisBounce .kb-status{
+  font-size:.62rem;
+  font-weight:900;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--kb-muted);
+  padding:3px 10px;
+  border-radius:10px;
+  background:rgba(37,99,235,.08);
+  transition:all .3s;
+  min-width:96px;
+  text-align:center;
+}
+#kuisBounce .kb-status.busy{
+  color:#f59e0b;
+  background:rgba(245,158,11,.14);
+  animation:kbStatusPulse 1s ease-in-out infinite;
+}
+#kuisBounce .kb-status.ready{
+  color:#10b981;
+  background:rgba(16,185,129,.14);
+}
+@keyframes kbStatusPulse{
+  0%,100%{ opacity:1; } 50%{ opacity:.55; }
+}
+
+/* BOLA */
+#kuisBounce .kb-ball{
+  position:absolute;
+  width:36px; height:36px;
+  border-radius:50%;
+  color:#fff;
+  font-weight:900;
+  font-family:ui-monospace,monospace;
+  font-size:.76rem;
+  line-height:1;
+  display:grid; place-items:center;
+  transform:translate(-50%, -50%) rotate(var(--rot, 0deg));
+  box-shadow:
+    inset -3px -3px 7px rgba(0,0,0,.4),
+    inset 3px 3px 8px rgba(255,255,255,.45),
+    0 4px 12px rgba(0,0,0,.55),
+    0 0 0 1.5px rgba(255,255,255,.2);
+  pointer-events:none;
+  z-index:2;
+  text-shadow:0 1px 3px rgba(0,0,0,.65);
+  background:
+    radial-gradient(circle at 30% 28%, #93c5fd 0%, #3b82f6 55%, #1e3a8a 100%),
+    radial-gradient(circle at 72% 82%, rgba(255,255,255,.28), transparent 42%);
+  will-change:left, top;
+}
+#kuisBounce .kb-ball::after{
+  content:''; position:absolute;
+  top:10%; left:16%;
+  width:34%; height:34%;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,1), rgba(255,255,255,0) 72%);
+  pointer-events:none;
+}
+#kuisBounce .kb-ball.selected::before{
+  content:''; position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 0% 50%, rgba(251,191,36,.9) 2px, transparent 3px),
+    radial-gradient(circle at 100% 50%, rgba(251,191,36,.9) 2px, transparent 3px),
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,.9) 2px, transparent 3px),
+    radial-gradient(circle at 50% 100%, rgba(255,255,255,.9) 2px, transparent 3px),
+    radial-gradient(circle at 15% 15%, rgba(251,191,36,.8) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 85% 85%, rgba(251,191,36,.8) 1.5px, transparent 2.5px);
+  animation:kbParticleBurst .55s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes kbParticleBurst{
+  0%  { transform:scale(.4) rotate(0deg); opacity:1; }
+  100%{ transform:scale(1.6) rotate(90deg); opacity:0; }
+}
+#kuisBounce .kb-ball.selected{
+  animation:kbSelected .55s ease-in-out;
+  z-index:25 !important;
+  box-shadow:
+    inset -3px -3px 6px rgba(0,0,0,.4),
+    inset 3px 3px 7px rgba(255,255,255,.6),
+    0 0 30px 8px rgba(255,255,255,.8),
+    0 0 60px 20px rgba(251,191,36,.9);
+}
+@keyframes kbSelected{
+  0%  { transform:translate(-50%,-50%) rotate(var(--rot, 0deg)) scale(1); }
+  40% { transform:translate(-50%,-50%) rotate(var(--rot, 0deg)) scale(1.55); }
+  70% { transform:translate(-50%,-50%) rotate(var(--rot, 0deg)) scale(1.3); }
+  100%{ transform:translate(-50%,-50%) rotate(var(--rot, 0deg)) scale(1.2); }
+}
+#kuisBounce .kb-ball.dropping{
+  animation:kbBallDrop 1.4s cubic-bezier(.5,0,.75,1) forwards;
+  z-index:30;
+}
+@keyframes kbBallDrop{
+  0%   { transform:translate(-50%,-50%) scale(1.2); opacity:1; }
+  15%  { transform:translate(-50%,-50%) translateY(-15px) scale(1.25) rotate(30deg); opacity:1; }
+  35%  { transform:translate(-50%,-50%) translateY(45px) scale(1.08) rotate(120deg); opacity:1; }
+  50%  { transform:translate(-50%,-50%) translateY(110px) scale(1.0) rotate(220deg); opacity:1; }
+  60%  { transform:translate(-50%,-50%) translateY(90px) scale(1.05) rotate(280deg); opacity:1; }
+  72%  { transform:translate(-50%,-50%) translateY(180px) scale(.95) rotate(340deg); opacity:.95; }
+  80%  { transform:translate(-50%,-50%) translateY(165px) scale(1.0) rotate(380deg); opacity:.9; }
+  92%  { transform:translate(-50%,-50%) translateY(280px) scale(.7) rotate(420deg); opacity:.6; }
+  100% { transform:translate(-50%,-50%) translateY(360px) scale(.35) rotate(480deg); opacity:0; }
+}
+#kuisBounce .kb-ball.dropped{ opacity:0; visibility:hidden; }
+
+/* PANEL SOAL */
+#kuisBounce .kb-question-panel{ margin-top:18px; display:none; }
+#kuisBounce .kb-question-panel.show{
+  display:block;
+  animation:kbSlideUp .55s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes kbSlideUp{
+  0%{opacity:0; transform:translateY(24px)}
+  100%{opacity:1; transform:translateY(0)}
+}
+#kuisBounce .kb-q-number{
+  display:inline-flex; align-items:center; gap:8px;
+  color:#fff; padding:6px 18px; border-radius:24px;
+  font-size:.78rem; font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:12px;
+  font-family:ui-monospace,monospace;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+#kuisBounce .kb-q-text{
+  font-size:1.05rem; font-weight:700;
+  line-height:1.7; margin-bottom:16px;
+  color:var(--kb-text);
+  padding:14px 18px;
+  background:linear-gradient(135deg,rgba(37,99,235,.04),rgba(139,92,246,.03));
+  border-left:4px solid var(--kb-primary);
+  border-radius:0 12px 12px 0;
+}
+#kuisBounce .kb-option{
+  display:block; width:100%; text-align:left;
+  padding:14px 18px; margin:8px 0;
+  border:2px solid var(--kb-border); border-radius:14px;
+  background:var(--kb-bg); color:var(--kb-text);
+  font-size:.94rem; cursor:pointer;
+  transition:all .25s; font-family:inherit;
+  font-weight:600;
+  position:relative;
+}
+#kuisBounce .kb-option:hover:not(:disabled){
+  border-color:var(--kb-primary);
+  background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(139,92,246,.04));
+  transform:translateX(4px);
+  box-shadow:0 6px 18px rgba(37,99,235,.12);
+}
+#kuisBounce .kb-option:disabled{ cursor:not-allowed; }
+#kuisBounce .kb-option.correct{
+  background:linear-gradient(135deg,rgba(16,185,129,.16),rgba(16,185,129,.06));
+  border-color:var(--kb-green);
+  color:#059669; font-weight:800;
+  animation:kbBounceCorrect .75s ease;
+}
+#kuisBounce .kb-option.correct::after{
+  content:'✓'; position:absolute; right:18px; top:50%;
+  transform:translateY(-50%); font-size:1.3rem; font-weight:900;
+}
+@keyframes kbBounceCorrect{
+  0%,100%{transform:translateX(0)}
+  30%    {transform:translateX(10px)}
+  60%    {transform:translateX(0)}
+  80%    {transform:translateX(5px)}
+}
+#kuisBounce .kb-option.wrong{
+  background:linear-gradient(135deg,rgba(244,63,94,.14),rgba(244,63,94,.05));
+  border-color:var(--kb-rose);
+  color:#e11d48; font-weight:800;
+  animation:kbShakeWrong .5s ease;
+}
+#kuisBounce .kb-option.wrong::after{
+  content:'✗'; position:absolute; right:18px; top:50%;
+  transform:translateY(-50%); font-size:1.3rem; font-weight:900;
+}
+@keyframes kbShakeWrong{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-9px)}
+  40%{transform:translateX(9px)}
+  60%{transform:translateX(-6px)}
+  80%{transform:translateX(6px)}
+}
+
+/* FEEDBACK + PENJELASAN */
+#kuisBounce .kb-feedback{
+  margin-top:16px;
+  border-radius:16px;
+  display:none;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+#kuisBounce .kb-feedback.show{
+  display:block;
+  animation:kbFeedSlide .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes kbFeedSlide{
+  0%{ opacity:0; transform:translateY(16px) scale(.96); }
+  100%{ opacity:1; transform:translateY(0) scale(1); }
+}
+#kuisBounce .kb-feedback .kb-fb-head{
+  display:flex; align-items:center; gap:12px;
+  padding:14px 18px;
+  font-weight:900; font-size:1rem;
+  color:#fff;
+  letter-spacing:.3px;
+}
+#kuisBounce .kb-feedback .kb-fb-icon{
+  width:36px; height:36px;
+  border-radius:50%;
+  background:rgba(255,255,255,.25);
+  display:grid; place-items:center;
+  font-size:1.15rem;
+  flex-shrink:0;
+}
+#kuisBounce .kb-feedback .kb-fb-body{
+  padding:16px 20px 18px;
+  line-height:1.75;
+  font-size:.94rem;
+}
+#kuisBounce .kb-feedback .kb-fb-label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:.7rem;
+  font-weight:900;
+  letter-spacing:1.2px;
+  padding:3px 10px;
+  border-radius:20px;
+  margin-bottom:8px;
+}
+#kuisBounce .kb-feedback .kb-fb-answer{
+  font-weight:800;
+  padding:8px 14px;
+  border-radius:10px;
+  display:inline-block;
+  margin:4px 0 10px;
+  font-family:ui-monospace,monospace;
+  font-size:.88rem;
+}
+#kuisBounce .kb-feedback .kb-fb-explain{
+  padding:12px 16px;
+  border-radius:12px;
+  font-size:.9rem;
+  line-height:1.7;
+  position:relative;
+  padding-left:44px;
+}
+#kuisBounce .kb-feedback .kb-fb-explain::before{
+  content:'💡';
+  position:absolute;
+  left:14px;
+  top:12px;
+  font-size:1.15rem;
+}
+#kuisBounce .kb-feedback.success .kb-fb-head{
+  background:linear-gradient(135deg,#10b981,#059669);
+}
+#kuisBounce .kb-feedback.success .kb-fb-body{
+  background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02));
+  color:var(--kb-text);
+}
+#kuisBounce .kb-feedback.success .kb-fb-label{
+  background:rgba(16,185,129,.18);
+  color:#059669;
+}
+#kuisBounce .kb-feedback.success .kb-fb-answer{
+  background:rgba(16,185,129,.14);
+  color:#059669;
+  border:1px solid rgba(16,185,129,.3);
+}
+#kuisBounce .kb-feedback.success .kb-fb-explain{
+  background:rgba(255,255,255,.6);
+  border-left:4px solid var(--kb-green);
+  color:#065f46;
+}
+html[data-theme="dark"] #kuisBounce .kb-feedback.success .kb-fb-explain{
+  background:rgba(16,185,129,.08);
+  color:#a7f3d0;
+}
+#kuisBounce .kb-feedback.fail .kb-fb-head{
+  background:linear-gradient(135deg,#f43f5e,#be123c);
+}
+#kuisBounce .kb-feedback.fail .kb-fb-body{
+  background:linear-gradient(135deg,rgba(244,63,94,.07),rgba(244,63,94,.02));
+  color:var(--kb-text);
+}
+#kuisBounce .kb-feedback.fail .kb-fb-label{
+  background:rgba(244,63,94,.15);
+  color:#be123c;
+}
+#kuisBounce .kb-feedback.fail .kb-fb-answer{
+  background:rgba(244,63,94,.12);
+  color:#be123c;
+  border:1px solid rgba(244,63,94,.3);
+}
+#kuisBounce .kb-feedback.fail .kb-fb-explain{
+  background:rgba(255,255,255,.6);
+  border-left:4px solid var(--kb-rose);
+  color:#7f1d1d;
+}
+html[data-theme="dark"] #kuisBounce .kb-feedback.fail .kb-fb-explain{
+  background:rgba(244,63,94,.08);
+  color:#fecdd3;
+}
+
+/* RESPONSIF */
+@media (max-width:900px){
+  #kuisBounce .kb-cage-wrap{ margin-right:0; margin-bottom:110px; }
+  #kuisBounce .kb-lever-assembly{
+    top:auto;
+    bottom:-110px;
+    right:auto;
+    left:50%;
+    transform:translateX(-50%);
+    flex-direction:column;
+  }
+  #kuisBounce .kb-lever{ width:60px; height:220px; }
+  #kuisBounce .kb-lever-slot{ top:20px; height:150px; width:10px; }
+  #kuisBounce .kb-lever-rod{ top:20px; height:80px; width:14px; }
+  #kuisBounce .kb-lever-rod.pulling{
+    animation:kbLeverSpringMobile .42s cubic-bezier(.5,1.8,.4,1) forwards;
+  }
+  @keyframes kbLeverSpringMobile{
+    0%   { transform: translateX(-50%) translateY(0); }
+    35%  { transform: translateX(-50%) translateY(84px); }
+    65%  { transform: translateX(-50%) translateY(65px); }
+    85%  { transform: translateX(-50%) translateY(76px); }
+    100% { transform: translateX(-50%) translateY(72px); }
+  }
+  #kuisBounce .kb-lever-base{ width:50px; height:50px; }
+  #kuisBounce .kb-lever-base::after{ inset:12px; }
+  #kuisBounce .kb-lever-knob{ width:34px; height:34px; top:-22px; }
+  #kuisBounce .kb-lever-bracket{
+    width:36px; height:30px;
+    flex-direction:row;
+    padding:0 4px;
+    justify-content:space-around;
+  }
+  #kuisBounce .kb-lever-bracket::before{
+    left:auto; top:-20px;
+    transform:none;
+    width:32px; height:22px;
+  }
+}
+@media (max-width:600px){
+  #kuisBounce .kb-cage{ width:280px; height:280px; }
+  #kuisBounce .kb-ball{ width:30px; height:30px; font-size:.62rem; }
+  #kuisBounce .kb-cage-outer{ inset:-26px; }
+  #kuisBounce .kb-cage-outer2{ inset:-12px; }
+  #kuisBounce .kb-gate{ width:50px; height:13px; }
+  #kuisBounce .kb-pipe{ height:26px; }
+  #kuisBounce .kb-slot-side{ min-width:90px; }
+  #kuisBounce .kb-slot{ width:80px; height:80px; font-size:1.4rem; }
+  #kuisBounce .kb-hud-item{ min-width:64px; padding:5px 10px; }
+  #kuisBounce .kb-hud-val{ font-size:.95rem; }
+  #kuisBounce .kb-loader-scene{ width:220px; height:220px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  #kuisBounce *,
+  #kuisBounce *::before,
+  #kuisBounce *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.05ms !important;
+  }
+}
+</style>
+
+<script>
+(function(){
+'use strict';
+
+/* ============ BANK 20 SOAL ============ */
+const KB_BANK = [
+  {q:"Penginderaan jauh (remote sensing) didefinisikan sebagai upaya memperoleh informasi tentang objek di permukaan bumi ...", o:["melalui kontak langsung dengan objek","tanpa kontak langsung dengan objek","dengan pengukuran langsung di lokasi","lewat wawancara dengan penduduk"], a:1, e:"Ciri utama penginderaan jauh adalah perolehan informasi TANPA kontak langsung dengan objek. Ini yang membedakannya dari survei terestris."},
+  {q:"Perbedaan mendasar antara sensor aktif dan sensor pasif terletak pada ...", o:["resolusi spasial yang dihasilkan","ketinggian wahana yang digunakan","sumber energi yang dipakai rekam","jumlah saluran spektral tersedia"], a:2, e:"Sensor aktif memancarkan energinya sendiri (mis. SAR, LIDAR), sedangkan sensor pasif mengandalkan energi matahari yang dipantulkan objek."},
+  {q:"Citra SAR (Synthetic Aperture Radar) dapat merekam permukaan bumi pada malam hari dan saat cuaca berawan karena ...", o:["memakai sinar ultraviolet tembus awan","memanfaatkan pantulan cahaya bulan","memancarkan gelombang mikro sendiri","mengandalkan radiasi inframerah"], a:2, e:"SAR adalah sensor aktif yang memancarkan gelombang mikro. Gelombang mikro dapat menembus awan, asap, dan tidak bergantung cahaya matahari."},
+  {q:"Resolusi spasial citra Landsat 8/9 pada band multispektral adalah 30 meter. Ini berarti ...", o:["tiap piksel mewakili area 30 × 30 m","citra direkam ulang tiap 30 hari","citra punya 30 saluran spektral","objek 30 m tidak dapat terdeteksi"], a:0, e:"Resolusi spasial = ukuran area di permukaan bumi yang diwakili satu piksel. 30 m berarti 1 piksel = 30×30 m."},
+  {q:"Seorang peneliti ingin memantau perubahan tutupan hutan Kalimantan selama 20 tahun terakhir. Citra yang paling tepat digunakan adalah ...", o:["WorldView-3 yang resolusinya sangat tinggi","Landsat yang arsip historisnya panjang","MODIS yang resolusi temporalnya harian","foto drone yang detailnya paling tajam"], a:1, e:"Landsat menyediakan arsip citra sejak 1972 secara gratis dengan resolusi 30 m — ideal untuk analisis perubahan jangka panjang."},
+  {q:"Indeks NDVI (Normalized Difference Vegetation Index) digunakan untuk ...", o:["mendeteksi badan air permukaan","mengukur kesehatan vegetasi","memetakan area permukiman","mengestimasi suhu permukaan"], a:1, e:"NDVI membandingkan pantulan near-infrared dan merah. Nilai rendah menandakan vegetasi stres/kering, nilai tinggi menandakan vegetasi sehat."},
+  {q:"Petani melihat dua sawahnya: sawah A memiliki NDVI 0,78 dan sawah B memiliki NDVI 0,31. Kesimpulan yang paling tepat adalah ...", o:["sawah A sehat, sawah B stres","sawah B lebih subur dari A","kedua sawah sama suburnya","NDVI tidak bisa dibandingkan"], a:0, e:"NDVI tinggi (~0,8) = vegetasi sehat dan rapat. NDVI rendah (~0,3) = vegetasi jarang, stres, atau kekeringan."},
+  {q:"Unsur interpretasi citra yang merujuk pada tingkat kecerahan atau kegelapan objek adalah ...", o:["bentuk (shape)","rona (tone)","tekstur (texture)","pola (pattern)"], a:1, e:"Rona = tingkat kecerahan/gelap objek pada citra. Bentuk = konfigurasi, tekstur = kasar-halus, pola = susunan keruangan."},
+  {q:"Pada citra, hutan biasanya dikenali dengan tekstur kasar, sedangkan sawah dengan tekstur halus. Unsur interpretasi yang dimaksud adalah ...", o:["rona","bentuk","tekstur","asosiasi"], a:2, e:"Tekstur = frekuensi perubahan rona dalam kelompok objek. Hutan banyak variasi tajuk → kasar. Sawah seragam → halus."},
+  {q:"Keunggulan citra hiperspektral dibandingkan multispektral adalah ...", o:["resolusi spasialnya selalu lebih tinggi","jumlah salurannya >100 dan detail","dapat merekam tanpa energi apapun","hanya dapat digunakan pada malam"], a:1, e:"Multispektral umumnya 4–10 saluran. Hiperspektral >100 saluran, memungkinkan identifikasi material/vegetasi yang sangat spesifik."},
+  {q:"Satelit MODIS dan VIIRS sering digunakan BMKG untuk mendeteksi hotspot (titik panas) karhutla karena ...", o:["resolusi spasialnya sangat tinggi","resolusi temporalnya tinggi","hanya beroperasi musim kemarau","dapat menembus awan tebal"], a:1, e:"MODIS merekam 1–2 kali sehari, VIIRS lebih sering. Kecepatan rekam penting untuk deteksi dini karhutla, walau resolusinya ~250–375 m."},
+  {q:"Data MODIS melaporkan 342 hotspot di Kabupaten Katingan. Interpretasi yang paling tepat adalah ...", o:["terjadi 342 kebakaran besar","342 titik panas perlu diverifikasi","342 bangunan baru terbangun","suhu udara Katingan 342°C"], a:1, e:"Hotspot = anomali suhu tinggi dari citra satelit. Bisa api sebenarnya, bisa juga sumber panas lain (mis. kilang). Harus diverifikasi."},
+  {q:"Alasan citra SAR (radar) sering dipilih untuk memetakan lahan gambut di Indonesia adalah ...", o:["citra SAR gratis dan mudah diunduh","SAR menembus awan dan peka lembap","resolusi SAR selalu paling tinggi","SAR hanya bisa dipakai siang hari"], a:1, e:"Karhutla Indonesia sering disertai asap tebal. SAR menembus asap/awan dan peka terhadap kelembapan — cocok untuk gambut."},
+  {q:"Resolusi temporal citra berkaitan dengan ...", o:["ukuran area yang diwakili satu piksel","jumlah saluran spektral yang tersedia","frekuensi satelit merekam lokasi sama","kedalaman bit data piksel citra"], a:2, e:"Temporal = berapa sering satelit melintas & merekam lokasi sama. Landsat 16 hari, MODIS harian, Sentinel-2 5 hari."},
+  {q:"Citra pankromatik memiliki karakteristik ...", o:["berwarna dengan banyak saluran","hitam-putih resolusi spasial tinggi","hanya merekam pada malam hari","khusus untuk deteksi suhu tanah"], a:1, e:"Pankromatik = satu saluran lebar (biasanya visible) → citra hitam-putih, tapi resolusi spasialnya biasanya lebih tinggi dari multispektral."},
+  {q:"Seorang siswa ingin membuat peta rawan banjir sederhana di kotanya. Langkah analisis yang paling tepat adalah ...", o:["membeli citra resolusi tinggi","olah NDWI dan data topografi","lihat foto banjir di medsos","tunggu data dari pemerintah"], a:1, e:"NDWI menandai area badan air/genangan, dikombinasikan dengan topografi (dataran rendah, cekungan) menghasilkan peta rawan banjir dasar."},
+  {q:"Urutan komponen sistem penginderaan jauh yang benar adalah ...", o:["energi → atmosfer → objek → sensor → data","sensor → energi → objek → atmosfer → data","objek → sensor → energi → data → pengguna","wahana → objek → sensor → atmosfer → data"], a:0, e:"Urutan klasik: sumber energi → atmosfer → interaksi objek → sensor (di wahana) → transmisi data → pengolahan → pengguna."},
+  {q:"Perbedaan resolusi radiometrik 8-bit dan 16-bit terletak pada ...", o:["jumlah piksel per baris citra","jumlah saluran spektral citra","rentang nilai digital per piksel","tinggi orbit satelit pengamat"], a:2, e:"8-bit = nilai 0–255 (256 level), 16-bit = 0–65535 (65.536 level). Radiometrik = kedalaman bit / sensitivitas perekaman."},
+  {q:"Google Earth Engine (GEE) adalah ...", o:["satelit penginderaan jauh Google","platform cloud analisis citra","sensor aktif yang dipasang drone","aplikasi peta offline navigasi"], a:1, e:"GEE = platform cloud computing yang menyediakan akses dan analisis citra satelit (Landsat, Sentinel, MODIS) dalam skala planet."}
+];
+
+const KB_TOTAL_BALLS = 20;
+const KB_R = 41;
+const KB_BALL_R = 5.4;
+const KB_MAX_SPEED_CHAOS = 20;
+const KB_MAX_SPEED_SETTLE = 10;
+const KB_MAX_ROT_PER_FRAME = 4;
+
+const KB_PALETTE = [
+  { c1:'#fca5a5', c2:'#ef4444', c3:'#7f1d1d' },
+  { c1:'#fdba74', c2:'#f97316', c3:'#7c2d12' },
+  { c1:'#fde68a', c2:'#f59e0b', c3:'#78350f' },
+  { c1:'#bef264', c2:'#84cc16', c3:'#365314' },
+  { c1:'#86efac', c2:'#22c55e', c3:'#14532d' },
+  { c1:'#6ee7b7', c2:'#10b981', c3:'#064e3b' },
+  { c1:'#67e8f9', c2:'#06b6d4', c3:'#164e63' },
+  { c1:'#93c5fd', c2:'#3b82f6', c3:'#1e3a8a' },
+  { c1:'#a5b4fc', c2:'#6366f1', c3:'#312e81' },
+  { c1:'#c4b5fd', c2:'#8b5cf6', c3:'#4c1d95' },
+  { c1:'#f0abfc', c2:'#d946ef', c3:'#701a75' },
+  { c1:'#f9a8d4', c2:'#ec4899', c3:'#831843' },
+  { c1:'#5eead4', c2:'#14b8a6', c3:'#134e4a' },
+  { c1:'#fda4af', c2:'#fb7185', c3:'#881337' },
+  { c1:'#cbd5e1', c2:'#64748b', c3:'#1e293b' }
+];
+
+let kbSession = [];
+let kbAnswered = new Set();
+let kbScore = 0;
+let kbShuffling = false;
+let kbCurrentIdx = -1;
+let kbWaitingNext = false;
+let kbLeverLocked = false;
+let kbBalls = [];
+let kbAnimId = null;
+let kbTimers = [];
+let kbIdleTimer = null;
+let kbDragging = false;
+let kbDragStartY = 0;
+let kbDragCurrent = 0;
+const KB_DRAG_THRESHOLD = 80;
+
+/* Audio */
+let kbAudioCtx = null;
+function kbGetAudio(){
+  if(kbAudioCtx) return kbAudioCtx;
+  try{
+    kbAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return kbAudioCtx;
+  } catch(e){ return null; }
+}
+function kbPlayTone(freq, dur, vol, type){
+  const ctx = kbGetAudio();
+  if(!ctx) return;
+  if(ctx.state === 'suspended') ctx.resume();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.setValueAtTime(freq, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(Math.max(50, freq * 0.7), ctx.currentTime + dur);
+  gain.gain.setValueAtTime(vol || 0.08, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(); osc.stop(ctx.currentTime + dur);
+}
+function kbPlayLever(){ kbPlayTone(220, 0.12, 0.09, 'sawtooth'); }
+function kbPlayDrop(){ kbPlayTone(1200, 0.18, 0.1, 'sine'); }
+function kbPlayCorrect(){ kbPlayTone(880, 0.1, 0.1, 'sine'); setTimeout(() => kbPlayTone(1320, 0.15, 0.1, 'sine'), 100); }
+function kbPlayWrong(){ kbPlayTone(220, 0.15, 0.1, 'square'); setTimeout(() => kbPlayTone(160, 0.2, 0.1, 'square'), 120); }
+function kbPlayCollisionSound(intensity){
+  if(intensity < 8) return;
+  const freq = 500 + Math.random() * 600;
+  const dur = 0.02 + Math.random() * 0.03;
+  kbPlayTone(freq, dur, 0.025 + intensity * 0.0015, 'triangle');
+}
+
+const kbCage       = document.getElementById('kbCage');
+const kbCageInner  = document.getElementById('kbCageInner');
+const kbSlot       = document.getElementById('kbSlot');
+const kbQPanel     = document.getElementById('kbQPanel');
+const kbScoreEl    = document.getElementById('kbScore');
+const kbRemaining  = document.getElementById('kbRemaining');
+const kbProgress   = document.getElementById('kbProgressFill');
+const kbBtnCount   = document.getElementById('kbBtnCount');
+const kbLever      = document.getElementById('kbLever');
+const kbLeverRod   = document.getElementById('kbLeverRod');
+const kbStatus     = document.getElementById('kbStatus');
+const kbLoader     = document.getElementById('kbLoader');
+
+function kbClearTimers(){ kbTimers.forEach(t => clearTimeout(t)); kbTimers = []; }
+function kbSetTimeout(fn, ms){
+  const id = setTimeout(() => { kbTimers = kbTimers.filter(t => t !== id); fn(); }, ms);
+  kbTimers.push(id); return id;
+}
+function kbSetStatus(text, mode){ kbStatus.textContent = text; kbStatus.className = 'kb-status' + (mode ? ' ' + mode : ''); }
+function kbResetSlot(){ kbSlot.classList.remove('landed'); kbSlot.textContent = '?'; kbSlot.style.background = ''; }
+function kbShuffleArray(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function kbBuildSession(){
+  const idxAll = KB_BANK.map((_, i) => i);
+  const picked = kbShuffleArray(idxAll).slice(0, KB_TOTAL_BALLS);
+  kbSession = picked.map(i => {
+    const src = KB_BANK[i];
+    const pairs = src.o.map((text, oi) => ({ text, correct: oi === src.a }));
+    const shuffled = kbShuffleArray(pairs);
+    return { q: src.q, o: shuffled.map(p => p.text), a: shuffled.findIndex(p => p.correct), e: src.e };
+  });
+}
+
+function kbCreateBalls(){
+  kbCage.querySelectorAll(':scope > .kb-ball').forEach(b => b.remove());
+  kbCageInner.innerHTML = '';
+  kbBalls = [];
+  const N = kbSession.length;
+  const maxR = KB_R - KB_BALL_R;
+  for(let i = 0; i < N; i++){
+    const el = document.createElement('div');
+    el.className = 'kb-ball';
+    el.textContent = i + 1;
+    el.dataset.idx = i;
+    const p = KB_PALETTE[i % KB_PALETTE.length];
+    el.dataset.c1 = p.c1; el.dataset.c2 = p.c2; el.dataset.c3 = p.c3;
+    el.style.background =
+      `radial-gradient(circle at 30% 28%, ${p.c1} 0%, ${p.c2} 55%, ${p.c3} 100%),` +
+      `radial-gradient(circle at 72% 82%, rgba(255,255,255,.28), transparent 42%)`;
+    const a = Math.random() * Math.PI * 2;
+    const r = Math.random() * maxR;
+    const x = 50 + r * Math.cos(a);
+    const y = 50 + r * Math.sin(a);
+    el.style.left = x.toFixed(3) + '%';
+    el.style.top  = y.toFixed(3) + '%';
+    el.style.setProperty('--rot', '0deg');
+    kbCageInner.appendChild(el);
+    kbBalls.push({ el, x, y, vx: 0, vy: 0, rot: 0, idx: i, active: true });
+  }
+}
+
+function kbPhysicsStep(chaosMode){
+  const gravity = chaosMode ? 0.10 : 0.55;
+  const damping = chaosMode ? 0.995 : 0.78;
+  const restitution = chaosMode ? 0.95 : 0.55;
+  const maxR = KB_R - KB_BALL_R;
+  const minD = KB_BALL_R * 2;
+  const N = kbBalls.length;
+  for(let i = 0; i < N; i++){
+    const b = kbBalls[i];
+    if(!b.active) continue;
+    b.vy += gravity; b.x += b.vx; b.y += b.vy;
+  }
+  for(let i = 0; i < N; i++){
+    const a = kbBalls[i]; if(!a.active) continue;
+    for(let j = i+1; j < N; j++){
+      const b = kbBalls[j]; if(!b.active) continue;
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const d2 = dx*dx + dy*dy;
+      if(d2 < minD*minD && d2 > 0.0001){
+        const d = Math.sqrt(d2);
+        const overlap = (minD - d) * 0.5;
+        const nx = dx / d, ny = dy / d;
+        a.x -= nx * overlap; a.y -= ny * overlap;
+        b.x += nx * overlap; b.y += ny * overlap;
+        const va = a.vx * nx + a.vy * ny;
+        const vb = b.vx * nx + b.vy * ny;
+        const diff = va - vb;
+        if(diff > 0){
+          const imp = diff * restitution;
+          a.vx -= imp * nx; a.vy -= imp * ny;
+          b.vx += imp * nx; b.vy += imp * ny;
+          kbPlayCollisionSound(diff);
+        }
+      }
+    }
+  }
+  for(let i = 0; i < N; i++){
+    const b = kbBalls[i]; if(!b.active) continue;
+    const dx = b.x - 50, dy = b.y - 50;
+    const d2 = dx*dx + dy*dy;
+    if(d2 > maxR*maxR){
+      const d = Math.sqrt(d2);
+      const nx = dx / d, ny = dy / d;
+      b.x = 50 + nx * maxR; b.y = 50 + ny * maxR;
+      const vn = b.vx * nx + b.vy * ny;
+      if(vn > 0){ b.vx -= (1 + restitution) * vn * nx; b.vy -= (1 + restitution) * vn * ny; }
+    }
+  }
+  const maxSpeed = chaosMode ? KB_MAX_SPEED_CHAOS : KB_MAX_SPEED_SETTLE;
+  for(let i = 0; i < N; i++){
+    const b = kbBalls[i]; if(!b.active) continue;
+    b.vx *= damping; b.vy *= damping;
+    const speed = Math.hypot(b.vx, b.vy);
+    if(speed > maxSpeed){
+      const scale = maxSpeed / speed;
+      b.vx *= scale; b.vy *= scale;
+    }
+  }
+}
+
+function kbVortexWind(strength){
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    const dx = b.x - 50, dy = b.y - 50;
+    const dist = Math.hypot(dx, dy) || 0.1;
+    const tx = -dy / dist, ty = dx / dist;
+    const radialFactor = Math.min(1, dist / (KB_R * 0.7));
+    const force = strength * (0.3 + radialFactor * 0.8);
+    b.vx += tx * force; b.vy += ty * force;
+    const outward = 0.15 * radialFactor;
+    b.vx += (dx / dist) * outward; b.vy += (dy / dist) * outward;
+  });
+}
+
+function kbBlowerUp(strength){
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    const yFactor = Math.max(0, (b.y - 30) / 70);
+    const force = strength * yFactor;
+    b.vy -= force;
+    b.vx += (Math.random() - 0.5) * 2.5 * yFactor;
+  });
+}
+
+function kbCentrifugal(){
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    const dx = b.x - 50, dy = b.y - 50;
+    const dist = Math.hypot(dx, dy);
+    const maxR = KB_R - KB_BALL_R;
+    if(dist > maxR * 0.75){
+      const tx = -dy / (dist || 1), ty = dx / (dist || 1);
+      const boost = 1.2 * (dist / maxR);
+      b.vx += tx * boost; b.vy += ty * boost;
+    }
+  });
+}
+
+function kbRenderBalls(){
+  for(let i = 0; i < kbBalls.length; i++){
+    const b = kbBalls[i]; if(!b.active) continue;
+    b.el.style.left = b.x.toFixed(3) + '%';
+    b.el.style.top  = b.y.toFixed(3) + '%';
+    const speed = Math.hypot(b.vx, b.vy);
+    if(speed > 0.15){
+      let delta = (b.vx * 0.15 + b.vy * 0.05);
+      if(delta > KB_MAX_ROT_PER_FRAME) delta = KB_MAX_ROT_PER_FRAME;
+      if(delta < -KB_MAX_ROT_PER_FRAME) delta = -KB_MAX_ROT_PER_FRAME;
+      b.rot += delta;
+      b.el.style.setProperty('--rot', b.rot.toFixed(1) + 'deg');
+    }
+  }
+}
+
+function kbIsSettled(){
+  const thr = 0.4;
+  for(let i = 0; i < kbBalls.length; i++){
+    const b = kbBalls[i]; if(!b.active) continue;
+    if(Math.abs(b.vx) > thr || Math.abs(b.vy) > thr) return false;
+  }
+  return true;
+}
+
+function kbExplode(){
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 12 + Math.random() * 14;
+    b.vx = Math.cos(angle) * speed;
+    b.vy = Math.sin(angle) * speed;
+  });
+}
+
+function kbRandomImpulse(){
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    if(Math.random() < 0.4){
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 6 + Math.random() * 10;
+      b.vx += Math.cos(angle) * speed;
+      b.vy += Math.sin(angle) * speed;
+    }
+  });
+}
+
+function kbPlaceSettled(){
+  const maxR = KB_R - KB_BALL_R;
+  const minD = KB_BALL_R * 2;
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    const a = Math.random() * Math.PI * 2;
+    const r = Math.random() * maxR;
+    b.x = 50 + r * Math.cos(a);
+    b.y = 50 + r * Math.sin(a);
+    b.vx = 0; b.vy = 0;
+  });
+  const gravity = 0.55, damping = 0.78;
+  for(let iter = 0; iter < 320; iter++){
+    for(let i = 0; i < kbBalls.length; i++){
+      const b = kbBalls[i]; if(!b.active) continue;
+      b.vy += gravity; b.x += b.vx; b.y += b.vy;
+    }
+    for(let i = 0; i < kbBalls.length; i++){
+      const a = kbBalls[i]; if(!a.active) continue;
+      for(let j = i+1; j < kbBalls.length; j++){
+        const b = kbBalls[j]; if(!b.active) continue;
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < minD*minD && d2 > 0.0001){
+          const d = Math.sqrt(d2);
+          const ov = (minD - d) * 0.5;
+          const nx = dx/d, ny = dy/d;
+          a.x -= nx*ov; a.y -= ny*ov;
+          b.x += nx*ov; b.y += ny*ov;
+          a.vx *= 0.5; a.vy *= 0.5;
+          b.vx *= 0.5; b.vy *= 0.5;
+        }
+      }
+    }
+    for(let i = 0; i < kbBalls.length; i++){
+      const b = kbBalls[i]; if(!b.active) continue;
+      const dx = b.x - 50, dy = b.y - 50;
+      const d2 = dx*dx + dy*dy;
+      if(d2 > maxR*maxR){
+        const d = Math.sqrt(d2);
+        const nx = dx/d, ny = dy/d;
+        b.x = 50 + nx*maxR; b.y = 50 + ny*maxR;
+        const vn = b.vx*nx + b.vy*ny;
+        if(vn > 0){ b.vx -= 2*vn*nx; b.vy -= 2*vn*ny; }
+      }
+    }
+    for(let i = 0; i < kbBalls.length; i++){
+      const b = kbBalls[i]; if(!b.active) continue;
+      b.vx *= damping; b.vy *= damping;
+    }
+  }
+  kbRenderBalls();
+}
+
+function kbUpdateHUD(){
+  kbScoreEl.textContent = kbScore;
+  const remaining = KB_TOTAL_BALLS - kbAnswered.size;
+  kbRemaining.textContent = remaining;
+  kbBtnCount.textContent = remaining + '×';
+  const pct = (kbAnswered.size / KB_TOTAL_BALLS) * 100;
+  kbProgress.style.width = pct + '%';
+}
+
+function kbPickBallNearGate(){
+  const gx = 50, gy = 96;
+  const actives = kbBalls.filter(b => b.active);
+  actives.sort((a, b) => Math.hypot(a.x - gx, a.y - gy) - Math.hypot(b.x - gx, b.y - gy));
+  const poolSize = Math.min(5, actives.length);
+  return actives[Math.floor(Math.random() * poolSize)];
+}
+
+function kbIdleJitter(){
+  if(kbShuffling || kbLeverLocked) return;
+  kbBalls.forEach(b => {
+    if(!b.active) return;
+    b.vx += (Math.random() - 0.5) * 0.25;
+    b.vy += (Math.random() - 0.5) * 0.25;
+  });
+}
+
+function kbLeverPull(){
+  if(kbLeverLocked || kbShuffling) return;
+  kbShuffling = true;
+  kbPlayLever();
+  if(navigator.vibrate) navigator.vibrate(15);
+  kbLeverRod.classList.remove('returning');
+  kbLeverRod.classList.add('pulling');
+  kbSetTimeout(() => {
+    kbLeverRod.classList.remove('pulling');
+    kbLeverRod.classList.add('returning');
+    kbSetTimeout(() => kbLeverRod.classList.remove('returning'), 500);
+  }, 450);
+  kbSetTimeout(() => kbShuffle(), 200);
+}
+
+kbLeverRod.addEventListener('pointerdown', e => {
+  if(kbLeverLocked || kbShuffling) return;
+  if(e.button !== undefined && e.button !== 0) return;
+  kbDragging = true;
+  kbDragStartY = e.clientY;
+  kbDragCurrent = 0;
+  kbLever.classList.add('dragging');
+  kbLeverRod.style.transition = 'none';
+  kbLeverRod.classList.remove('pulling', 'returning');
+  try { kbLeverRod.setPointerCapture(e.pointerId); } catch(err){}
+  e.preventDefault();
+});
+
+kbLeverRod.addEventListener('pointermove', e => {
+  if(!kbDragging) return;
+  const dy = Math.max(0, Math.min(110, e.clientY - kbDragStartY));
+  kbDragCurrent = dy;
+  kbLeverRod.style.transform = `translateX(-50%) translateY(${dy}px)`;
+  if(dy > KB_DRAG_THRESHOLD && dy < KB_DRAG_THRESHOLD + 10){
+    if(navigator.vibrate) navigator.vibrate(8);
+  }
+});
+
+function kbEndDrag(){
+  if(!kbDragging) return;
+  kbDragging = false;
+  kbLever.classList.remove('dragging');
+  kbLeverRod.style.transition = '';
+  kbLeverRod.style.transform = '';
+  if(kbDragCurrent >= KB_DRAG_THRESHOLD){ kbLeverPull(); }
+  else {
+    kbLeverRod.classList.add('returning');
+    kbSetTimeout(() => kbLeverRod.classList.remove('returning'), 500);
+  }
+  kbDragCurrent = 0;
+}
+kbLeverRod.addEventListener('pointerup', kbEndDrag);
+kbLeverRod.addEventListener('pointercancel', kbEndDrag);
+kbLeverRod.addEventListener('pointerleave', e => {
+  if(kbDragging && kbDragCurrent < 5) kbEndDrag();
+});
+
+async function kbShuffle(){
+  if(kbAnimId){ cancelAnimationFrame(kbAnimId); kbAnimId = null; }
+  if(kbWaitingNext){
+    kbWaitingNext = false;
+    kbQPanel.classList.remove('show');
+    kbQPanel.innerHTML = '';
+  }
+  kbResetSlot();
+  const activeCount = kbBalls.filter(b => b.active).length;
+  if(activeCount === 0){ kbShuffling = false; kbShowFinish(); return; }
+  kbLeverLocked = true;
+  kbLever.classList.add('disabled');
+  kbQPanel.classList.remove('show');
+  kbQPanel.innerHTML = '';
+
+  kbSetStatus('Kipas menyala...', 'busy');
+  const spinUpStart = performance.now();
+  await new Promise(resolve => {
+    function loop(){
+      const t = performance.now() - spinUpStart;
+      const progress = Math.min(1, t / 350);
+      kbBlowerUp(0.3 + progress * 0.8);
+      kbPhysicsStep(true); kbRenderBalls();
+      if(t < 350){ kbAnimId = requestAnimationFrame(loop); }
+      else { kbAnimId = null; resolve(); }
+    }
+    loop();
+  });
+
+  kbSetStatus('Mengaduk...', 'busy');
+  kbExplode();
+  const chaosDuration = 1400 + Math.random() * 300;
+  const chaosStart = performance.now();
+  let lastImpulse = 0, frameCount = 0;
+
+  await new Promise(resolve => {
+    function loop(){
+      const t = performance.now() - chaosStart;
+      const progress = t / chaosDuration;
+      kbVortexWind(0.9 - progress * 0.15);
+      kbBlowerUp(0.8 + Math.sin(t / 120) * 0.2);
+      if(frameCount % 2 === 0) kbCentrifugal();
+      if(t - lastImpulse > 200 && t < chaosDuration - 300){ kbRandomImpulse(); lastImpulse = t; }
+      kbPhysicsStep(true); kbRenderBalls();
+      frameCount++;
+      if(t < chaosDuration){ kbAnimId = requestAnimationFrame(loop); }
+      else { kbAnimId = null; resolve(); }
+    }
+    loop();
+  });
+
+  kbSetStatus('Mengendap...', 'busy');
+  const slowStart = performance.now();
+  await new Promise(resolve => {
+    function loop(){
+      const t = performance.now() - slowStart;
+      const progress = Math.min(1, t / 600);
+      kbBlowerUp(0.8 * (1 - progress));
+      kbVortexWind(0.7 * (1 - progress));
+      kbPhysicsStep(false); kbRenderBalls();
+      if(t < 600){ kbAnimId = requestAnimationFrame(loop); }
+      else { kbAnimId = null; resolve(); }
+    }
+    loop();
+  });
+
+  kbSetStatus('Memilih bola...', 'busy');
+  const pickStart = performance.now();
+  await new Promise(resolve => {
+    function loop(){
+      const t = performance.now() - pickStart;
+      const gx = 50, gy = 92;
+      let nearest = null, nearestDist = Infinity;
+      for(const b of kbBalls){
+        if(!b.active) continue;
+        const d = Math.hypot(b.x - gx, b.y - gy);
+        if(d < nearestDist){ nearestDist = d; nearest = b; }
+      }
+      if(nearest && t < 700){
+        const dx = gx - nearest.x, dy = gy - nearest.y;
+        const d = Math.hypot(dx, dy) || 1;
+        const pull = 0.35 * (1 - t / 700);
+        nearest.vx += (dx / d) * pull;
+        nearest.vy += (dy / d) * pull;
+      }
+      kbPhysicsStep(false); kbRenderBalls();
+      if(t < 700){ kbAnimId = requestAnimationFrame(loop); }
+      else { kbAnimId = null; resolve(); }
+    }
+    loop();
+  });
+
+  const pick = kbPickBallNearGate();
+  if(!pick){ kbShuffling = false; kbShowFinish(); return; }
+
+  pick.active = false;
+  const ballEl = pick.el;
+  ballEl.style.left = pick.x.toFixed(3) + '%';
+  ballEl.style.top  = pick.y.toFixed(3) + '%';
+  ballEl.style.transform = 'translate(-50%, -50%) rotate(var(--rot, 0deg))';
+  kbCage.appendChild(ballEl);
+  kbSetStatus('Siap!', 'ready');
+  ballEl.classList.add('selected');
+  if(navigator.vibrate) navigator.vibrate(20);
+
+  kbSetTimeout(() => {
+    ballEl.classList.remove('selected');
+    ballEl.classList.add('dropping');
+    kbSetTimeout(() => {
+      ballEl.classList.remove('dropping');
+      ballEl.classList.add('dropped');
+      kbPlayDrop();
+      if(navigator.vibrate) navigator.vibrate([10, 30, 10]);
+      kbSlot.textContent = pick.idx + 1;
+      kbSlot.style.background =
+        `radial-gradient(circle at 30% 28%, ${ballEl.dataset.c1} 0%, ${ballEl.dataset.c2} 55%, ${ballEl.dataset.c3} 100%)`;
+      kbSlot.classList.add('landed');
+      kbAnswered.add(pick.idx);
+      kbUpdateHUD();
+      kbCurrentIdx = pick.idx;
+      kbShowQuestion(pick.idx);
+      kbShuffling = false;
+      kbLeverLocked = false;
+      kbLever.classList.remove('disabled');
+    }, 1400);
+  }, 400);
+}
+
+function kbShowQuestion(idx){
+  const item = kbSession[idx];
+  const p = KB_PALETTE[idx % KB_PALETTE.length];
+  kbQPanel.innerHTML =
+    '<div class="kb-q-number" style="background:linear-gradient(135deg,' + p.c2 + ',' + p.c3 + ');">' +
+      '🎯 Soal #' + (idx + 1) +
+    '</div>' +
+    '<div class="kb-q-text">' + item.q + '</div>' +
+    '<div class="kb-options" id="kbOptions"></div>' +
+    '<div class="kb-feedback" id="kbFeedback"></div>';
+  kbQPanel.classList.add('show');
+  const optEl = kbQPanel.querySelector('#kbOptions');
+  item.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'kb-option';
+    btn.textContent = String.fromCharCode(65 + i) + '. ' + opt;
+    btn.onclick = () => kbAnswer(btn, i);
+    optEl.appendChild(btn);
+  });
+}
+
+function kbRenderFeedback(type, item, idx){
+  const fb = kbQPanel.querySelector('#kbFeedback');
+  const userAnswer = String.fromCharCode(65 + idx);
+  const correctAnswer = String.fromCharCode(65 + item.a);
+  const correctText = item.o[item.a];
+  const explain = item.e || ('Jawaban yang benar adalah ' + correctAnswer + '. ' + correctText);
+  if(type === 'success'){
+    fb.className = 'kb-feedback success show';
+    fb.innerHTML =
+      '<div class="kb-fb-head"><div class="kb-fb-icon">✓</div><div>JAWABAN BENAR! 🎉</div></div>' +
+      '<div class="kb-fb-body">' +
+        '<div class="kb-fb-label">📌 JAWABANMU</div><br>' +
+        '<div class="kb-fb-answer">' + userAnswer + '. ' + item.o[idx] + '</div>' +
+        '<div class="kb-fb-explain"><strong>Penjelasan:</strong> ' + explain + '</div>' +
+      '</div>';
+  } else {
+    fb.className = 'kb-feedback fail show';
+    fb.innerHTML =
+      '<div class="kb-fb-head"><div class="kb-fb-icon">✗</div><div>JAWABAN KURANG TEPAT</div></div>' +
+      '<div class="kb-fb-body">' +
+        '<div class="kb-fb-label">❌ JAWABANMU</div><br>' +
+        '<div class="kb-fb-answer" style="background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3);color:#be123c;">' + userAnswer + '. ' + item.o[idx] + '</div>' +
+        '<div class="kb-fb-label" style="margin-top:12px;">✅ JAWABAN BENAR</div><br>' +
+        '<div class="kb-fb-answer" style="background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.3);color:#059669;">' + correctAnswer + '. ' + correctText + '</div>' +
+        '<div class="kb-fb-explain"><strong>Penjelasan:</strong> ' + explain + '</div>' +
+      '</div>';
+  }
+}
+
+function kbAnswer(btn, idx){
+  const item = kbSession[kbCurrentIdx];
+  const buttons = kbQPanel.querySelectorAll('.kb-option');
+  buttons.forEach(b => b.disabled = true);
+  if(idx === item.a){
+    btn.classList.add('correct');
+    kbScore++;
+    kbScoreEl.textContent = kbScore;
+    kbScoreEl.classList.remove('bump');
+    void kbScoreEl.offsetWidth;
+    kbScoreEl.classList.add('bump');
+    kbRenderFeedback('success', item, idx);
+    kbPlayCorrect();
+    if(navigator.vibrate) navigator.vibrate([15, 40, 15]);
+  } else {
+    btn.classList.add('wrong');
+    buttons[item.a].classList.add('correct');
+    kbRenderFeedback('fail', item, idx);
+    kbPlayWrong();
+    if(navigator.vibrate) navigator.vibrate([30, 50, 30, 50, 30]);
+  }
+  kbWaitingNext = true;
+  const activeCount = kbBalls.filter(b => b.active).length;
+  if(activeCount === 0){ kbSetTimeout(() => kbShowFinish(), 1500); }
+}
+
+function kbShowFinish(){
+  const pct = Math.round(kbScore / KB_TOTAL_BALLS * 100);
+  kbSetStatus('SELESAI', 'ready');
+  kbQPanel.innerHTML =
+    '<div style="text-align:center;padding:26px 20px;">' +
+      '<div style="font-size:2.6rem;margin-bottom:8px;">🏆</div>' +
+      '<h3 style="font-size:1.5rem;margin-bottom:8px;' +
+      'background:linear-gradient(135deg,#f59e0b,#ef4444,#8b5cf6);' +
+      '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">' +
+        'KUIS SELESAI!' +
+      '</h3>' +
+      '<p style="font-size:1.1rem;color:var(--kb-muted);">Skor kamu: <strong style="color:var(--kb-primary);">' +
+        kbScore + '/' + KB_TOTAL_BALLS + '</strong> (' + pct + '%)</p>' +
+      '<p style="margin-top:10px;font-weight:700;">' +
+        (pct >= 80 ? '🎉 Luar biasa! Kamu Geomaster! 🏆' :
+         pct >= 60 ? '👏 Bagus! Terus belajar. 🛰️' :
+                    '📚 Ayo pelajari materinya lagi!') +
+      '</p>' +
+      '<button onclick="kbReset()" ' +
+      'style="margin-top:20px;max-width:280px;margin-left:auto;margin-right:auto;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;border:none;border-radius:50px;background:linear-gradient(135deg,#f59e0b,#ef4444,#8b5cf6);color:#fff;font-weight:800;cursor:pointer;font-family:inherit;font-size:.92rem;">' +
+        '🔄 MAIN ULANG (ACAK SOAL BARU)' +
+      '</button>' +
+    '</div>';
+  kbQPanel.classList.add('show');
+  kbLever.classList.add('disabled');
+  kbLeverLocked = true;
+}
+
+function kbReset(){
+  if(kbAnimId){ cancelAnimationFrame(kbAnimId); kbAnimId = null; }
+  kbClearTimers();
+  kbAnswered.clear();
+  kbScore = 0;
+  kbCurrentIdx = -1;
+  kbWaitingNext = false;
+  kbShuffling = false;
+  kbLeverLocked = false;
+  kbDragging = false;
+  kbDragCurrent = 0;
+  kbLever.classList.remove('disabled', 'dragging');
+  kbLeverRod.classList.remove('pulling', 'returning');
+  kbLeverRod.style.transform = '';
+  kbLeverRod.style.transition = '';
+  kbBuildSession();
+  kbCreateBalls();
+  kbPlaceSettled();
+  kbUpdateHUD();
+  kbQPanel.classList.remove('show');
+  kbQPanel.innerHTML = '';
+  kbResetSlot();
+  kbSetStatus('SIAP');
+}
+
+/* ============ INIT ============ */
+kbBuildSession();
+kbCreateBalls();
+kbPlaceSettled();
+kbUpdateHUD();
+kbSetStatus('SIAP');
+
+kbIdleTimer = setInterval(kbIdleJitter, 100);
+
+kbLever.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    kbLeverPull();
+  }
+});
+
+window.kbReset = kbReset;
+window.kbLeverPull = kbLeverPull;
+
+/* ============ HIDE LOADER ============ */
+// Loader terlihat minimal ~2 detik lalu fade out
+setTimeout(() => {
+  kbLoader.classList.add('hidden');
+  setTimeout(() => { kbLoader.style.display = 'none'; }, 600);
+}, 2000);
+
+})();
+</script>
